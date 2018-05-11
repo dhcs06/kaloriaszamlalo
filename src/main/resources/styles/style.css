@@ -1,0 +1,29 @@
+.root {
+    -fx-background-color: #1e1e1e;
+    -fx-background-image: url("https://www.bbcgoodfood.com/sites/default/files/guide/guide-image/2017/01/avocado.jpg");
+    -fx-background-size: cover;
+}
+
+Button {
+    -fx-background-color: #192228;
+    -fx-background-insets: 0,1,2,3;
+    -fx-background-radius: 3,2,2,2;
+    -fx-padding: 10 10 10 10;
+    -fx-text-fill: white;
+    -fx-font-size: 1em;
+    -fx-font-weight: bold;
+    -fx-pref-width: 200px;
+}
+
+Label {
+    -fx-text-fill: white;
+}
+
+.table-view .column-header {
+    -fx-background-color: #192228;
+}
+
+.table-view .column-header .label {
+    -fx-text-fill: white;
+    -fx-font-weight: bold;
+}
