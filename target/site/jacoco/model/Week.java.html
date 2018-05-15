@@ -1,0 +1,149 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>Week.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">calorieWork</a> &gt; <a href="index.source.html" class="el_package">model</a> &gt; <span class="el_source">Week.java</span></div><h1>Week.java</h1><pre class="source lang-java linenums">package model;
+
+/*-
+ * #%L
+ * calorieWork
+ * %%
+ * Copyright (C) 2018 Debreceni Egyetem Informatikai Kar
+ * %%
+ * Licensed under the Apache License, Version 2.0 (the &quot;License&quot;);
+you may not use this file except in compliance with the License.
+You may obtain a copy of the License at
+
+     http://www.apache.org/licenses/LICENSE-2.0
+
+Unless required by applicable law or agreed to in writing, software
+distributed under the License is distributed on an &quot;AS IS&quot; BASIS,
+WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+See the License for the specific language governing permissions and
+limitations under the License.
+ * #L%
+ */
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
+import javafx.scene.control.Alert;
+import model.enumerators.EWeekDayTypes;
+import model.interfaces.IWeekLogic;
+
+import java.util.*;
+
+/**
+ * Represents the days of the week.
+ */
+public class Week implements IWeekLogic {
+	/**
+	 * Adds the meals to the days of the week.
+	 */
+	private final HashMap&lt;EWeekDayTypes, List&lt;Food&gt;&gt; daysWithFoods;
+
+	/**
+	 * Constructor of the Week's class.
+	 */
+<span class="fc" id="L42">	public Week() {</span>
+<span class="fc" id="L43">		this.daysWithFoods = new HashMap&lt;&gt;();</span>
+<span class="fc" id="L44">	}</span>
+
+	/**
+	 * Overriding of the Week's constructor.
+	 *
+	 * @param days A hashmap dictionary which contains the days
+	 */
+<span class="nc" id="L51">	public Week(HashMap&lt;EWeekDayTypes, List&lt;Food&gt;&gt; days) {</span>
+<span class="nc" id="L52">		this.daysWithFoods = days;</span>
+<span class="nc" id="L53">	}</span>
+
+	/**
+	 * This function add foodlists to a specific date.
+	 *
+	 * @param day      The day where we want to add the list of foods
+	 * @param foodList The list of foods what we want to add
+	 */
+	public void AddFoodsToDay(EWeekDayTypes day, List&lt;Food&gt; foodList) {
+<span class="fc" id="L62">		this.daysWithFoods.put(day, foodList);</span>
+<span class="fc" id="L63">	}</span>
+
+	/**
+	 * Returns the list of foods according to the day.
+	 *
+	 * @param day The day itself
+	 * @return list of foods
+	 */
+	public List&lt;Food&gt; GetFoodsFromDay(EWeekDayTypes day) {
+<span class="fc" id="L72">		return this.daysWithFoods.get(day);</span>
+	}
+
+	/**
+	 * This function generates a list of Foods according to nuOfCalories.
+	 *
+	 * @param listOfSelectableFoods The list of foods what generated
+	 * @param nuOfCalories          The number of calories
+	 */
+	@Override
+	public void GenerateAWeekWithFoods(List&lt;Food&gt; listOfSelectableFoods, int nuOfCalories) {
+
+<span class="fc" id="L84">		int min = 0;</span>
+<span class="fc" id="L85">		int max = listOfSelectableFoods.size() - 1;</span>
+
+<span class="fc" id="L87">		Random r = new Random();</span>
+
+<span class="fc bfc" id="L89" title="All 2 branches covered.">		for (EWeekDayTypes day : EWeekDayTypes.values()) {</span>
+<span class="fc" id="L90">			ObservableList&lt;Food&gt; listOfFoods = FXCollections.observableArrayList();</span>
+<span class="fc" id="L91">			int consumedCalories = 0;</span>
+<span class="fc bfc" id="L92" title="All 2 branches covered.">			while (consumedCalories &lt; nuOfCalories) {</span>
+<span class="fc" id="L93">				int randomIndexForListOfSelectableFoods = r.nextInt(max - min + 1) + min;</span>
+<span class="fc" id="L94">				Food food = listOfSelectableFoods.get(randomIndexForListOfSelectableFoods);</span>
+<span class="fc" id="L95">				consumedCalories += food.GetCalorie();</span>
+<span class="fc bfc" id="L96" title="All 2 branches covered.">				if (consumedCalories &lt; nuOfCalories) {</span>
+<span class="fc" id="L97">					listOfFoods.add(food);</span>
+				}
+<span class="fc" id="L99">			}</span>
+<span class="fc" id="L100">			this.AddFoodsToDay(day, listOfFoods);</span>
+		}
+<span class="fc" id="L102">	}</span>
+
+	/**
+	 * This function calculates the bmi value according to the height and weight.
+	 *
+	 * @param height The height of the user
+	 * @param weight The weight of the user
+	 * @return the calculated value from the weight and height
+	 *
+	 */
+	@Override
+	public float calculateTheBmiValueAccording(float height, float weight) {
+<span class="pc bpc" id="L114" title="1 of 2 branches missed.">		if (height == 0) return 0;</span>
+<span class="nc" id="L115">		return (weight / (height * height)) * 10000;</span>
+	}
+
+	/**
+	 * This function calculates the calories value according to the bmi's value.
+	 *
+	 * @param bmiValue The value we calculate from the user's weight and height
+	 * @return return with the kCal value the user should eat
+	 */
+	@Override
+	public int calculateTheCaloriesValueAccording(float bmiValue) {
+<span class="nc" id="L126">		Alert alert2 = new Alert(Alert.AlertType.INFORMATION);</span>
+<span class="nc" id="L127">		alert2.setTitle(&quot;Ups...&quot;);</span>
+<span class="nc" id="L128">		alert2.setHeaderText(&quot;Information&quot;);</span>
+<span class="nc" id="L129">		alert2.setContentText(&quot;Wrong data!&quot;);</span>
+
+
+<span class="nc bnc" id="L132" title="All 4 branches missed.">		if (bmiValue &lt;= 10 || bmiValue &gt;= 40) {</span>
+<span class="nc" id="L133">			alert2.show();</span>
+		} else {
+
+<span class="nc bnc" id="L136" title="All 4 branches missed.">			if (bmiValue &gt; 11 &amp;&amp; bmiValue &lt;= 18.5) {</span>
+<span class="nc" id="L137">				return 2500;</span>
+<span class="nc bnc" id="L138" title="All 4 branches missed.">			} else if (bmiValue &gt;= 18.6 &amp;&amp; bmiValue &lt; 25) {</span>
+<span class="nc" id="L139">				return 2000;</span>
+<span class="nc bnc" id="L140" title="All 4 branches missed.">			} else if (bmiValue &gt;= 25 &amp;&amp; bmiValue &lt; 30) {</span>
+<span class="nc" id="L141">				return 1500;</span>
+<span class="nc bnc" id="L142" title="All 4 branches missed.">			} else if (bmiValue &gt;= 30 &amp;&amp; bmiValue &lt; 40) {</span>
+<span class="nc" id="L143">				return 1000;</span>
+			}
+		}
+<span class="nc" id="L146">		return 0;</span>
+	}
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.1.201803210924</span></div></body></html>

@@ -1,5 +1,24 @@
 package controller;
 
+/*-
+ * #%L
+ * calorieWork
+ * %%
+ * Copyright (C) 2018 Debreceni Egyetem Informatikai Kar
+ * %%
+ * Licensed under the Apache License, Version 2.0 (the "License");
+you may not use this file except in compliance with the License.
+You may obtain a copy of the License at
+
+     http://www.apache.org/licenses/LICENSE-2.0
+
+Unless required by applicable law or agreed to in writing, software
+distributed under the License is distributed on an "AS IS" BASIS,
+WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+See the License for the specific language governing permissions and
+limitations under the License.
+ * #L%
+ */
 import dao.DataAccessObject;
 
 import javafx.beans.property.SimpleStringProperty;
@@ -32,8 +51,8 @@ public class WeekController implements Initializable
 
 	@FXML
 	private TableView<Week> weekTableView;
-	@FXML
-	private TableColumn<Week, String> partOfTheDayColumn;
+	//@FXML
+	//private TableColumn<Week, String> partOfTheDayColumn;
 	@FXML
 	private TableColumn<Week, String> mondayColumn;
 	@FXML
@@ -56,20 +75,18 @@ public class WeekController implements Initializable
 	@Override
 	public void initialize(URL location, ResourceBundle resources)
 	{
-		// this.stage = (Stage) this.vbox.getScene().getWindow(); Not initialized yet.
 		this.weekModel = new Week();
 
 		DataAccessObject<Food> foodDao = new DataAccessObject<>(Food.class, "PROGTECH");
 		this.listOfSelectableFoods = foodDao.All();
 
-		// partOfTheDayColumn.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().));
-		mondayColumn.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().GetFoodsFromDay(EWeekDayTypes.Monday).toString().replace("[", "").replace("]", "")));
-		tuesdayColumn.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().GetFoodsFromDay(EWeekDayTypes.Tuesday).toString().replace("[", "").replace("]", "")));
-		wednesdayColumn.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().GetFoodsFromDay(EWeekDayTypes.Wednesday).toString().replace("[", "").replace("]", "")));
-		thursdayColumn.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().GetFoodsFromDay(EWeekDayTypes.Thursday).toString().replace("[", "").replace("]", "")));
-		fridayColumn.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().GetFoodsFromDay(EWeekDayTypes.Friday).toString().replace("[", "").replace("]", "")));
-		saturdayColumn.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().GetFoodsFromDay(EWeekDayTypes.Saturday).toString().replace("[", "").replace("]", "")));
-		sundayColumn.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().GetFoodsFromDay(EWeekDayTypes.Sunday).toString().replace("[", "").replace("]", "")));
+		mondayColumn.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().GetFoodsFromDay(EWeekDayTypes.Monday).toString().replace("[", "").replace("]", "").replace(",", "")));
+		tuesdayColumn.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().GetFoodsFromDay(EWeekDayTypes.Tuesday).toString().replace("[", "").replace("]", "").replace(",", "")));
+		wednesdayColumn.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().GetFoodsFromDay(EWeekDayTypes.Wednesday).toString().replace("[", "").replace("]", "").replace(",", "")));
+		thursdayColumn.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().GetFoodsFromDay(EWeekDayTypes.Thursday).toString().replace("[", "").replace("]", "").replace(",", "")));
+		fridayColumn.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().GetFoodsFromDay(EWeekDayTypes.Friday).toString().replace("[", "").replace("]", "").replace(",", "")));
+		saturdayColumn.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().GetFoodsFromDay(EWeekDayTypes.Saturday).toString().replace("[", "").replace("]", "").replace(",", "")));
+		sundayColumn.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().GetFoodsFromDay(EWeekDayTypes.Sunday).toString().replace("[", "").replace("]", "").replace(",", "")));
 
 		this.weekModel.GenerateAWeekWithFoods(this.listOfSelectableFoods, 2000);
 		ObservableList<Week> listOfWeeks = FXCollections.observableArrayList();
@@ -121,7 +138,6 @@ public class WeekController implements Initializable
 		{
 			try
 			{
-				// int nuOfCalories = Integer.parseInt(this.caloriesTextField.getText());
 				float userWeight = Float.parseFloat(this.weightTextField.getText());
 				float userHeight = Float.parseFloat(this.heightTextField.getText());
 				float bmiValue = this.weekModel.calculateTheBmiValueAccording(userHeight, userWeight);

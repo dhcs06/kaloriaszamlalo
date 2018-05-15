@@ -1,11 +1,27 @@
 package model;
 
+/*-
+ * #%L
+ * calorieWork
+ * %%
+ * Copyright (C) 2018 Debreceni Egyetem Informatikai Kar
+ * %%
+ * Licensed under the Apache License, Version 2.0 (the "License");
+you may not use this file except in compliance with the License.
+You may obtain a copy of the License at
+
+     http://www.apache.org/licenses/LICENSE-2.0
+
+Unless required by applicable law or agreed to in writing, software
+distributed under the License is distributed on an "AS IS" BASIS,
+WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+See the License for the specific language governing permissions and
+limitations under the License.
+ * #L%
+ */
 import model.enumerators.EFoodTypes;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.Table;
+import javax.persistence.*;
 
 /**
  * Ancestor class for all possible foods.
@@ -15,23 +31,37 @@ import javax.persistence.Table;
 @Table(name = "Food")
 public class Food
 {
-	@Id
+	/**
+	 * Id of the meal.
+	 */
+	@Id @GeneratedValue(strategy = GenerationType.IDENTITY)
 	@Column(name = "id")
 	private int id;
+	/**
+	 * Calorie value of the meal.
+	 */
 	@Column(name = "calorie")
 	private float calorie;
+	/**
+	 * Name of the meal.
+	 */
 	@Column(name = "name")
 	private String name;
+	/**
+	 * Type of the meal.
+	 */
 	@Column(name = "type")
 	private EFoodTypes type;
 
-
+	/**
+	 *Initializes the object.
+	 */
 	public Food()
 	{
 	}
 
 	/**
-	 * The constructor of the Food's class
+	 * The constructor of the Food's class.
 	 *
 	 * @param calorie The calorie of the food
 	 * @param name    The name of the food
@@ -45,7 +75,7 @@ public class Food
 	}
 
 	/**
-	 * Returns the calorie value of the food
+	 * Returns the calorie value of the food.
 	 *
 	 * @return The calorie value
 	 */
@@ -55,7 +85,7 @@ public class Food
 	}
 
 	/**
-	 * Returns the name of the food
+	 * Returns the name of the food.
 	 *
 	 * @return the name of the food
 	 */
@@ -65,7 +95,7 @@ public class Food
 	}
 
 	/**
-	 * Returns the type of the food
+	 * Returns the type of the food.
 	 *
 	 * @return the type of the food
 	 */
@@ -74,6 +104,11 @@ public class Food
 		return this.type;
 	}
 
+	/**
+	 * Gives the right format to the food.
+	 *
+	 * @return the suitable format of the food
+	 */
 	@Override
 	public String toString()
 	{

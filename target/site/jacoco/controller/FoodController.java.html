@@ -1,0 +1,137 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>FoodController.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">calorieWork</a> &gt; <a href="index.source.html" class="el_package">controller</a> &gt; <span class="el_source">FoodController.java</span></div><h1>FoodController.java</h1><pre class="source lang-java linenums">package controller;
+
+/*-
+ * #%L
+ * calorieWork
+ * %%
+ * Copyright (C) 2018 Debreceni Egyetem Informatikai Kar
+ * %%
+ * Licensed under the Apache License, Version 2.0 (the &quot;License&quot;);
+you may not use this file except in compliance with the License.
+You may obtain a copy of the License at
+
+     http://www.apache.org/licenses/LICENSE-2.0
+
+Unless required by applicable law or agreed to in writing, software
+distributed under the License is distributed on an &quot;AS IS&quot; BASIS,
+WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+See the License for the specific language governing permissions and
+limitations under the License.
+ * #L%
+ */
+
+import dao.DataAccessObject;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
+import javafx.event.ActionEvent;
+import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
+import javafx.fxml.Initializable;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
+import javafx.scene.control.Alert;
+import javafx.scene.control.ListCell;
+import javafx.scene.control.ListView;
+import javafx.scene.control.TextField;
+import javafx.scene.layout.VBox;
+import javafx.stage.Stage;
+import javafx.util.Callback;
+import model.Food;
+import model.Week;
+import model.enumerators.EFoodTypes;
+
+import java.io.IOException;
+import java.net.URL;
+import java.util.ResourceBundle;
+
+<span class="nc" id="L47">public class FoodController implements Initializable {</span>
+    @FXML
+    private VBox vbox;
+    @FXML
+    private ListView&lt;Food&gt; listViewFood;
+
+<span class="nc" id="L53">    @FXML</span>
+<span class="nc" id="L54">    private TextField foodname;</span>
+
+    @FXML
+    private TextField foodcalorie;
+
+<span class="nc" id="L59">    private Stage stage;</span>
+<span class="nc bnc" id="L60" title="All 2 branches missed."></span>
+    private DataAccessObject&lt;Food&gt; foodDao;
+<span class="nc" id="L62"></span>
+<span class="nc" id="L63">    private ObservableList&lt;Food&gt; listOfFoods;</span>
+
+<span class="nc" id="L65">    @Override</span>
+    public void initialize(URL location, ResourceBundle resources) {
+<span class="nc" id="L67">        this.listOfFoods = FXCollections.observableArrayList();</span>
+<span class="nc" id="L68">        this.foodDao = new DataAccessObject&lt;&gt;(Food.class, &quot;PROGTECH&quot;);</span>
+<span class="nc" id="L69">        this.listOfFoods.addAll(this.foodDao.All());</span>
+<span class="nc" id="L70">        this.listViewFood.setItems(this.listOfFoods);</span>
+
+<span class="nc" id="L72">        this.Refresh();</span>
+<span class="nc" id="L73">    }</span>
+
+    @FXML
+    private void onRemoveClick(ActionEvent e) {
+<span class="nc" id="L77">        Food selectedFood = this.listViewFood.getSelectionModel().getSelectedItem();</span>
+<span class="nc bnc" id="L78" title="All 2 branches missed.">        if (selectedFood != null) {</span>
+<span class="nc" id="L79">            this.foodDao.Remove(selectedFood);</span>
+<span class="nc" id="L80">            this.listOfFoods.remove(selectedFood);</span>
+
+<span class="nc" id="L82">            Alert alert = new Alert(Alert.AlertType.INFORMATION);</span>
+<span class="nc" id="L83">            alert.setTitle(&quot;Information&quot;);</span>
+<span class="nc" id="L84">            alert.setContentText(&quot;You have successfully deleted the Food!&quot;);</span>
+<span class="nc" id="L85">            alert.show();</span>
+<span class="nc" id="L86">            this.Refresh();</span>
+        }
+<span class="nc" id="L88">    }</span>
+
+    @FXML
+    private void onAddClick(ActionEvent e) {
+<span class="nc" id="L92">        Alert alert2 = new Alert(Alert.AlertType.INFORMATION);</span>
+<span class="nc" id="L93">        alert2.setTitle(&quot;Ups...&quot;);</span>
+<span class="nc" id="L94">        alert2.setHeaderText(&quot;Information&quot;);</span>
+<span class="nc" id="L95">        alert2.setContentText(&quot;Something is missing!!&quot;);</span>
+
+<span class="nc bnc" id="L97" title="All 4 branches missed.">        if ((foodcalorie.getText().isEmpty() || foodname.getText().isEmpty())) {</span>
+<span class="nc" id="L98">            alert2.show();</span>
+        } else {
+            try {
+<span class="nc" id="L101">                String food = (this.foodname.getText());</span>
+<span class="nc" id="L102">                float calorie = Float.parseFloat(this.foodcalorie.getText());</span>
+<span class="nc" id="L103">                Food newFood = new Food(calorie, food, EFoodTypes.Dinner);</span>
+<span class="nc" id="L104">                this.foodDao.Add(newFood);</span>
+<span class="nc" id="L105">                this.listOfFoods.add(newFood);</span>
+
+<span class="nc" id="L107">                this.Refresh();</span>
+
+
+<span class="nc" id="L110">            } catch (NumberFormatException nfe) {</span>
+<span class="nc" id="L111">                alert2.setContentText(&quot;Invalid number&quot;);</span>
+<span class="nc" id="L112">                alert2.show();</span>
+<span class="nc" id="L113">            }</span>
+        }
+<span class="nc" id="L115">    }</span>
+
+    @FXML
+    private void onCancelClick(ActionEvent e) {
+<span class="nc" id="L119">        Parent root = null;</span>
+
+        try {
+<span class="nc" id="L122">            root = FXMLLoader.load(getClass().getResource(&quot;/view/mainView.fxml&quot;));</span>
+<span class="nc" id="L123">            this.stage = (Stage) this.vbox.getScene().getWindow();</span>
+<span class="nc" id="L124">            this.stage.setTitle(&quot;My Week&quot;);</span>
+<span class="nc" id="L125">            this.stage.setScene(new Scene(root));</span>
+<span class="nc" id="L126">            this.stage.getScene().getStylesheets().add(&quot;/styles/style.css&quot;);</span>
+<span class="nc" id="L127">            this.stage.show();</span>
+<span class="nc" id="L128">        } catch (IOException e1) {</span>
+<span class="nc" id="L129">            e1.printStackTrace();</span>
+<span class="nc" id="L130">        }</span>
+<span class="nc" id="L131">    }</span>
+
+    private void Refresh() {
+<span class="nc" id="L134">        this.listViewFood.refresh();</span>
+<span class="nc" id="L135">    }</span>
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.1.201803210924</span></div></body></html>
